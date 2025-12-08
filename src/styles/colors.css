@@ -1,0 +1,31 @@
+/* Design Tokens - Colors */
+/* Source: Figma Style Guide */
+
+:root {
+  /* Neutral Colors */
+  --color-neutral-0: #ffffff;
+  --color-neutral-100: #f6f8ff;
+  --color-neutral-200: #90a4d4;
+  --color-neutral-300: #697c9a;
+  --color-neutral-500: #4b6a9b;
+  --color-neutral-700: #2b3442;
+  --color-neutral-800: #1e2a47;
+  --color-neutral-900: #141d2f;
+
+  /* Blue Colors */
+  --color-blue-300: #60abff;
+  --color-blue-500: #0079ff;
+
+  /* Red Colors */
+  --color-red-500: #f74646;
+
+  /* Semantic Color Aliases */
+  --color-background: var(--color-neutral-100);
+  --color-surface: var(--color-neutral-0);
+  --color-primary: var(--color-blue-500);
+  --color-primary-hover: var(--color-blue-300);
+  --color-error: var(--color-red-500);
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-500);
+  --color-text-tertiary: var(--color-neutral-300);
+}

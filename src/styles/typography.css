@@ -1,0 +1,132 @@
+/* Design Tokens - Typography */
+/* Source: Figma Style Guide */
+/* Font Family: Space Mono */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  /* Font Family */
+  --font-family-primary: 'Space Mono', monospace;
+
+  /* Text Preset 1 - Space Mono, Bold, 26px */
+  --text-preset-1-size: 26px;
+  --text-preset-1-weight: 700;
+  --text-preset-1-line-height: 1.2;
+  --text-preset-1-letter-spacing: 0;
+
+  /* Text Preset 2 - Space Mono, Bold, 22px */
+  --text-preset-2-size: 22px;
+  --text-preset-2-weight: 700;
+  --text-preset-2-line-height: 1.4;
+  --text-preset-2-letter-spacing: 0;
+
+  /* Text Preset 3 - Space Mono, Regular, 18px */
+  --text-preset-3-size: 18px;
+  --text-preset-3-weight: 400;
+  --text-preset-3-line-height: 1.4;
+  --text-preset-3-letter-spacing: 0;
+
+  /* Text Preset 3 Mobile - Space Mono, Regular, 13px */
+  --text-preset-3-mobile-size: 13px;
+  --text-preset-3-mobile-weight: 400;
+  --text-preset-3-mobile-line-height: 1.4;
+  --text-preset-3-mobile-letter-spacing: 0;
+
+  /* Text Preset 4 - Space Mono, Regular, 16px */
+  --text-preset-4-size: 16px;
+  --text-preset-4-weight: 400;
+  --text-preset-4-line-height: 1.5;
+  --text-preset-4-letter-spacing: 0;
+
+  /* Text Preset 5 - Space Mono, Bold, 16px */
+  --text-preset-5-size: 16px;
+  --text-preset-5-weight: 700;
+  --text-preset-5-line-height: 1.5;
+  --text-preset-5-letter-spacing: 0;
+
+  /* Text Preset 6 - Space Mono, Regular, 15px */
+  --text-preset-6-size: 15px;
+  --text-preset-6-weight: 400;
+  --text-preset-6-line-height: 1.5;
+  --text-preset-6-letter-spacing: 0;
+
+  /* Text Preset 7 - Space Mono, Regular, 13px */
+  --text-preset-7-size: 13px;
+  --text-preset-7-weight: 400;
+  --text-preset-7-line-height: 1.5;
+  --text-preset-7-letter-spacing: 0;
+
+  /* Text Preset 8 - Space Mono, Bold, 13px with letter spacing */
+  --text-preset-8-size: 13px;
+  --text-preset-8-weight: 700;
+  --text-preset-8-line-height: 1.4;
+  --text-preset-8-letter-spacing: 2.5px;
+}
+
+/* Utility Classes */
+body {
+  font-family: var(--font-family-primary);
+}
+
+.text-preset-1 {
+  font-size: var(--text-preset-1-size);
+  font-weight: var(--text-preset-1-weight);
+  line-height: var(--text-preset-1-line-height);
+  letter-spacing: var(--text-preset-1-letter-spacing);
+}
+
+.text-preset-2 {
+  font-size: var(--text-preset-2-size);
+  font-weight: var(--text-preset-2-weight);
+  line-height: var(--text-preset-2-line-height);
+  letter-spacing: var(--text-preset-2-letter-spacing);
+}
+
+.text-preset-3 {
+  font-size: var(--text-preset-3-size);
+  font-weight: var(--text-preset-3-weight);
+  line-height: var(--text-preset-3-line-height);
+  letter-spacing: var(--text-preset-3-letter-spacing);
+}
+
+.text-preset-4 {
+  font-size: var(--text-preset-4-size);
+  font-weight: var(--text-preset-4-weight);
+  line-height: var(--text-preset-4-line-height);
+  letter-spacing: var(--text-preset-4-letter-spacing);
+}
+
+.text-preset-5 {
+  font-size: var(--text-preset-5-size);
+  font-weight: var(--text-preset-5-weight);
+  line-height: var(--text-preset-5-line-height);
+  letter-spacing: var(--text-preset-5-letter-spacing);
+}
+
+.text-preset-6 {
+  font-size: var(--text-preset-6-size);
+  font-weight: var(--text-preset-6-weight);
+  line-height: var(--text-preset-6-line-height);
+  letter-spacing: var(--text-preset-6-letter-spacing);
+}
+
+.text-preset-7 {
+  font-size: var(--text-preset-7-size);
+  font-weight: var(--text-preset-7-weight);
+  line-height: var(--text-preset-7-line-height);
+  letter-spacing: var(--text-preset-7-letter-spacing);
+}
+
+.text-preset-8 {
+  font-size: var(--text-preset-8-size);
+  font-weight: var(--text-preset-8-weight);
+  line-height: var(--text-preset-8-line-height);
+  letter-spacing: var(--text-preset-8-letter-spacing);
+}
+
+@media (max-width: 768px) {
+  .text-preset-3 {
+    font-size: var(--text-preset-3-mobile-size);
+    line-height: var(--text-preset-3-mobile-line-height);
+  }
+}
