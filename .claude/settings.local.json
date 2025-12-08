@@ -5,7 +5,12 @@
       "mcp__figma__get_screenshot",
       "mcp__figma__get_metadata",
       "WebSearch",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout 5 echo:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

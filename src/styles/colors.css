@@ -29,3 +29,18 @@
   --color-text-secondary: var(--color-neutral-500);
   --color-text-tertiary: var(--color-neutral-300);
 }
+
+/* Dark Mode Theme Overrides */
+[data-theme="dark"] {
+  /* Background & Surface Colors */
+  --color-background: var(--color-neutral-900);  /* #141d2f */
+  --color-surface: var(--color-neutral-800);     /* #1e2a47 */
+
+  /* Text Colors */
+  --color-text-primary: var(--color-neutral-0);     /* #ffffff */
+  --color-text-secondary: var(--color-neutral-0);   /* #ffffff */
+  --color-text-tertiary: var(--color-neutral-200);  /* #90a4d4 - slightly muted */
+
+  /* Interactive Colors - Keep Same */
+  /* --color-primary, --color-primary-hover, --color-error remain unchanged */
+}

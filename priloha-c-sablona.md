@@ -56,7 +56,7 @@ Nic
 **Prompt:**
 
 ```
-/generate-prp INITIAL_part1.md
+/generate-prp INITIAL_part1.md + /clear (spotrebovana polovica contextu)
 ```
 
 **Výsledok:**
@@ -71,7 +71,7 @@ Ziadne
 **Poznámky:**
 
 ```
-Vygeneroval 686 riadkov, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
+Vygeneroval 686 riadkov, osetril v nom aj use case ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
 Nezapol som plan mode tak ako to bolo vo videu, neviem co by sa zmenilo ak by som ho zapol, skusim pri dalsom commande.
 ```
 
@@ -80,32 +80,25 @@ Nezapol som plan mode tak ako to bolo vo videu, neviem co by sa zmenilo ak by so
 ### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
 
 **Nástroj:** Claude
-**Kontext:** generate-prp
+**Kontext:** execute-prp
 
 **Prompt:**
 
 ```
-/generate-prp INITIAL_part1.md
+/execute-prp PRPS/github-user-search.md
 ```
 
 **Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
+✅ Fungoval perfektne (first try)
 
 **Úpravy:**
 
 ```
-Ziadne
+Musel som este upravit search button, nakolko som design tlacitka z figmy nezahrnul do INITIAL.md.
+Myslel som ze to zvladne bez toho. Vid dalsi prompt.
 ```
 
 **Poznámky:**
-
-```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
-```
 
 ---
 
@@ -117,15 +110,11 @@ Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor so
 **Prompt:**
 
 ```
-/generate-prp INITIAL_part1.md
+Update search button in SearchBar to follow design from figma: https://www.figma.com/design/CSKrPZ4ETBC5JY5zjRoTXn/github-user-search-app?node-id=5-172&t=BEB9oQc3q4lAGtxE-4
 ```
 
 **Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
+✅ Fungoval perfektne (first try)
 
 **Úpravy:**
 
@@ -134,10 +123,6 @@ Ziadne
 ```
 
 **Poznámky:**
-
-```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
-```
 
 ---
 
