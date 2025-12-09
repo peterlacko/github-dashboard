@@ -10,6 +10,12 @@
   color: var(--color-text-primary);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+}
+
 @media (min-width: 768px) {
   .header {
     margin-bottom: var(--spacing-300);

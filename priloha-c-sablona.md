@@ -102,10 +102,10 @@ Myslel som ze to zvladne bez toho. Vid dalsi prompt.
 
 ---
 
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
+### Prompt #4: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
 
 **Nástroj:** Claude
-**Kontext:** generate-prp
+**Kontext:** update search button
 
 **Prompt:**
 
@@ -126,23 +126,19 @@ Ziadne
 
 ---
 
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
+### Prompt #5: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
 
 **Nástroj:** Claude
-**Kontext:** generate-prp
+**Kontext:** generate-prp 2
 
 **Prompt:**
 
 ```
-/generate-prp INITIAL_part1.md
+/generate-prp INITIAL_part2.md
 ```
 
 **Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
+✅ Fungoval perfektne (first try) ale musel som prikaz prerusit, vid poznamky
 
 **Úpravy:**
 
@@ -153,28 +149,23 @@ Ziadne
 **Poznámky:**
 
 ```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
+Ked som to spustil prvykrat, tak claude neulozil PRP subor, len ho vytlacil do terminalu a po mojom approve zacal rovno s implementaciou. Proces som prerusil, zacal odznova a aj teraz po vygenerovani PRP sa ho myslim si nechystal ulozit do suboru. Tak som mu to pred approvom explicitne pripomenul a potom to uz slo hladko. PRP som si pozrel, vygeneroval 1595 riadkov.
 ```
 
 ---
 
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
+### Prompt #6: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
 
 **Nástroj:** Claude
-**Kontext:** generate-prp
 
-**Prompt:**
+**Kontext:** execute-prp
 
 ```
-/generate-prp INITIAL_part1.md
+/execute-prp PRPS/github-oauth-authentication.md
 ```
 
 **Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
+✅ Fungoval perfektne (first try)
 
 **Úpravy:**
 

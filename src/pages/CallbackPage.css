@@ -1,0 +1,27 @@
+.callback-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.callback-message {
+  text-align: center;
+  padding: var(--spacing-500);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-10);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.callback-message.error {
+  border: 2px solid var(--color-red-500);
+}
+
+.callback-message p:first-child {
+  margin-bottom: var(--spacing-100);
+  color: var(--color-text-primary);
+}
+
+.callback-message p:last-child {
+  color: var(--color-text-secondary);
+}

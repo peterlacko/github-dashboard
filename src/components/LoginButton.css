@@ -1,0 +1,25 @@
+.login-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  padding: var(--spacing-150) var(--spacing-300);
+  background-color: var(--color-blue-500);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-8);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: 700;
+}
+
+.login-button:hover {
+  background-color: var(--color-blue-300);
+}
+
+.login-button:active {
+  transform: translateY(1px);
+}
+
+.github-icon {
+  flex-shrink: 0;
+}
