@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useSearch } from "../contexts/SearchContext";
 import { useGitHubRepos } from "../hooks/useGitHubRepos";
@@ -10,7 +10,7 @@ import "./DashboardPage.css";
 
 export default function DashboardPage() {
   const { token } = useAuth();
-  const { searchedUser } = useSearch();
+  const { searchedUser, setSearchedUser } = useSearch();
   const {
     user: localSearchedUser,
     loading: searchLoading,
@@ -22,6 +22,13 @@ export default function DashboardPage() {
     loading: reposLoading,
     error: reposError,
   } = useGitHubRepos(token, searchedUser?.login || null);
+
+  // Sync local search results to SearchContext
+  useEffect(() => {
+    if (localSearchedUser) {
+      setSearchedUser(localSearchedUser);
+    }
+  }, [localSearchedUser, setSearchedUser]);
 
   return (
     <div className="dashboard-page">
