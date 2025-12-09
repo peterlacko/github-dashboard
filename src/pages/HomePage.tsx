@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useGitHubUser } from '../hooks/useGitHubUser';
 import SearchBar from '../components/SearchBar';
@@ -27,9 +28,31 @@ export default function HomePage() {
         </div>
       )}
 
-      {user && <UserProfile user={user} />}
+      {user && (
+        <>
+          <UserProfile user={user} />
+          {authUser && (
+            <div className="dashboard-link-container">
+              <Link to="/dashboard" className="dashboard-link text-preset-5">
+                Go to My Dashboard →
+              </Link>
+            </div>
+          )}
+        </>
+      )}
 
-      {!user && !loading && !error && (
+      {!user && !loading && !error && authUser && (
+        <div className="dashboard-prompt">
+          <Link to="/dashboard" className="dashboard-link-button text-preset-5">
+            Go to My Dashboard
+          </Link>
+          <p className="dashboard-prompt-text text-preset-6">
+            View your profile and repositories
+          </p>
+        </div>
+      )}
+
+      {!user && !loading && !error && !authUser && (
         <EmptyState message="Search for a GitHub user to get started" />
       )}
     </div>

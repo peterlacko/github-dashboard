@@ -176,28 +176,25 @@ Ziadne
 **Poznámky:**
 
 ```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
+Prikaz fungoval na moje pocudovanie skvele, funguje prihlasenie, dashboard routa, logout, zoznam repozitarov. Chyba len preklik na dashboard a search bar v dashboarde, co som ale nespecifikoval a nepokladam to za chybu implementacie.
 ```
 
 ---
 
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
+### Prompt #7: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
 
 **Nástroj:** Claude
-**Kontext:** generate-prp
+
+**Kontext:** male upravy v appke
 
 **Prompt:**
 
 ```
-/generate-prp INITIAL_part1.md
+Update implementation to display SearchBar also on dashboard page. If user is logged in, display link to dashboard on Home page, under "Joined" info
 ```
 
 **Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
+✅ Fungoval perfektne (first try)
 
 **Úpravy:**
 
@@ -208,199 +205,7 @@ Ziadne
 **Poznámky:**
 
 ```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
-```
 
----
-
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
-
-**Nástroj:** Claude
-**Kontext:** generate-prp
-
-**Prompt:**
-
-```
-/generate-prp INITIAL_part1.md
-```
-
-**Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
-
-**Úpravy:**
-
-```
-Ziadne
-```
-
-**Poznámky:**
-
-```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
-```
-
----
-
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
-
-**Nástroj:** Claude
-**Kontext:** generate-prp
-
-**Prompt:**
-
-```
-/generate-prp INITIAL_part1.md
-```
-
-**Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
-
-**Úpravy:**
-
-```
-Ziadne
-```
-
-**Poznámky:**
-
-```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
-```
-
----
-
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
-
-**Nástroj:** Claude
-**Kontext:** generate-prp
-
-**Prompt:**
-
-```
-/generate-prp INITIAL_part1.md
-```
-
-**Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
-
-**Úpravy:**
-
-```
-Ziadne
-```
-
-**Poznámky:**
-
-```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
-```
-
----
-
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
-
-**Nástroj:** Claude
-**Kontext:** generate-prp
-
-**Prompt:**
-
-```
-/generate-prp INITIAL_part1.md
-```
-
-**Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
-
-**Úpravy:**
-
-```
-Ziadne
-```
-
-**Poznámky:**
-
-```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
-```
-
----
-
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
-
-**Nástroj:** Claude
-**Kontext:** generate-prp
-
-**Prompt:**
-
-```
-/generate-prp INITIAL_part1.md
-```
-
-**Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
-
-**Úpravy:**
-
-```
-Ziadne
-```
-
-**Poznámky:**
-
-```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
-```
-
----
-
-### Prompt #3: **\*\***\*\*\*\***\*\***\_**\*\***\*\*\*\***\*\***
-
-**Nástroj:** Claude
-**Kontext:** generate-prp
-
-**Prompt:**
-
-```
-/generate-prp INITIAL_part1.md
-```
-
-**Výsledok:**
-[ ] ✅ Fungoval perfektne (first try)  
-[ ] ⭐⭐⭐⭐ Dobré, potreboval malé úpravy  
-[ ] ⭐⭐⭐ OK, potreboval viac úprav  
-[ ] ⭐⭐ Slabé, musel som veľa prepísať  
-[ ] ❌ Nefungoval, musel som celé prepísať
-
-**Úpravy:**
-
-```
-Ziadne
-```
-
-**Poznámky:**
-
-```
-Vygeneroval 686 riadko, osetril v nom aj use casu ktore som nespomenul. Subor som si presiel, vyzeralo to OK.
 ```
 
 ---

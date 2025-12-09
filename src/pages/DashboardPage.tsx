@@ -1,33 +1,48 @@
 import { useAuth } from '../contexts/AuthContext';
 import { useGitHubRepos } from '../hooks/useGitHubRepos';
+import { useGitHubUser } from '../hooks/useGitHubUser';
+import SearchBar from '../components/SearchBar';
 import UserProfile from '../components/UserProfile';
 import RepoCard from '../components/RepoCard';
 import './DashboardPage.css';
 
 export default function DashboardPage() {
-  const { user, token } = useAuth();
-  const { repos, loading, error } = useGitHubRepos(token, user?.login || null);
+  const { user: authUser, token } = useAuth();
+  const { repos, loading: reposLoading, error: reposError } = useGitHubRepos(token, authUser?.login || null);
+  const { user: searchedUser, loading: searchLoading, error: searchError, searchUser } = useGitHubUser();
 
   return (
     <div className="dashboard-page">
-      {user && <UserProfile user={user} />}
+      <SearchBar
+        onSearch={searchUser}
+        loading={searchLoading}
+        error={searchError}
+      />
+
+      {searchedUser && (
+        <div className="dashboard-search-result">
+          <UserProfile user={searchedUser} />
+        </div>
+      )}
+
+      {!searchedUser && authUser && <UserProfile user={authUser} />}
 
       <section className="repos-section">
         <h2 className="repos-title text-preset-2">Top 10 Public Repositories</h2>
 
-        {loading && (
+        {reposLoading && (
           <p className="repos-message text-preset-4">Loading repositories...</p>
         )}
 
-        {error && (
-          <p className="repos-message error text-preset-4">{error}</p>
+        {reposError && (
+          <p className="repos-message error text-preset-4">{reposError}</p>
         )}
 
-        {!loading && !error && repos.length === 0 && (
+        {!reposLoading && !reposError && repos.length === 0 && (
           <p className="repos-message text-preset-4">No public repositories found.</p>
         )}
 
-        {!loading && !error && repos.length > 0 && (
+        {!reposLoading && !reposError && repos.length > 0 && (
           <div className="repos-grid">
             {repos.map(repo => (
               <RepoCard key={repo.id} repo={repo} />

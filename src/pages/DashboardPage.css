@@ -3,6 +3,10 @@
   margin: 0 auto;
 }
 
+.dashboard-search-result {
+  margin-bottom: var(--spacing-400);
+}
+
 .repos-section {
   margin-top: var(--spacing-500);
 }
