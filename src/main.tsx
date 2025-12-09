@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { SearchProvider } from "./contexts/SearchContext";
 import App from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(
@@ -10,7 +11,9 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
-          <App />
+          <SearchProvider>
+            <App />
+          </SearchProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

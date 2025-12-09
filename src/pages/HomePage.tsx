@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useSearch } from '../contexts/SearchContext';
 import { useGitHubUser } from '../hooks/useGitHubUser';
 import SearchBar from '../components/SearchBar';
 import UserProfile from '../components/UserProfile';
@@ -9,7 +11,15 @@ import './HomePage.css';
 
 export default function HomePage() {
   const { user: authUser } = useAuth();
+  const { setSearchedUser } = useSearch();
   const { user, loading, error, searchUser } = useGitHubUser();
+
+  // Persist search results to SearchContext
+  useEffect(() => {
+    if (user) {
+      setSearchedUser(user);
+    }
+  }, [user, setSearchedUser]);
 
   return (
     <div className="home-page">

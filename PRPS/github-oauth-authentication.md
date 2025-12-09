@@ -3,6 +3,7 @@
 ## Feature Summary
 
 Implement GitHub OAuth login functionality allowing users to:
+
 1. Sign in with their GitHub account
 2. View their avatar and name in the navigation bar with logout button
 3. Access protected `/dashboard` route showing:
@@ -15,12 +16,14 @@ Implement GitHub OAuth login functionality allowing users to:
 ## Architecture Decision
 
 **Chosen Approach:** Netlify Dev for local development
+
 - Runs Vite dev server + serverless functions together on localhost
 - Secure OAuth flow (CLIENT_SECRET stays server-side)
 - Single command to start everything: `npm run dev:netlify`
 - Environment variables managed through `.env.local`
 
 **Why this approach:**
+
 - Simplest setup for localhost OAuth (no separate backend server needed)
 - CLIENT_SECRET never exposed to frontend
 - If you ever want to deploy later, infrastructure is ready
@@ -29,11 +32,13 @@ Implement GitHub OAuth login functionality allowing users to:
 ## Technology Stack
 
 **New Dependencies:**
+
 - `react-router-dom` - Routing with protected routes
 - `@netlify/functions` - TypeScript types for serverless functions
 - `netlify-cli` - Run functions locally
 
 **Core Libraries (already in project):**
+
 - React 19.2.0 + TypeScript
 - Vite 7.x
 - Native fetch() for API calls
@@ -58,23 +63,27 @@ Implement GitHub OAuth login functionality allowing users to:
 **Important:** Port `8888` is Netlify Dev's default port. Don't use `5173` (Vite's default).
 
 **Documentation:**
+
 - Creating OAuth app: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app
 - Authorizing OAuth apps: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
 
 ### 2. Environment Variables
 
 **Create `.env.local` in project root:**
+
 ```env
 VITE_GITHUB_CLIENT_ID=your_client_id_here
 GITHUB_CLIENT_SECRET=your_client_secret_here
 ```
 
 **Key points:**
+
 - `VITE_` prefix required for client-side variables (Vite requirement)
 - `GITHUB_CLIENT_SECRET` has no prefix (server-side only, never exposed)
 - This file is automatically ignored by Git (Vite's default behavior)
 
 **Update `.gitignore` to ensure:**
+
 ```
 .env.local
 .env*.local
@@ -106,6 +115,7 @@ npm install --save-dev @types/react-router-dom netlify-cli @netlify/functions
 ```
 
 **Purpose:**
+
 - Tells Netlify Dev where functions are located
 - Maps `/api/*` URLs to serverless functions
 - Works locally with `netlify dev` command
@@ -115,7 +125,7 @@ npm install --save-dev @types/react-router-dom netlify-cli @netlify/functions
 **Create `netlify/functions/callback.ts`:**
 
 ```typescript
-import type { Handler } from '@netlify/functions';
+import type { Handler } from "@netlify/functions";
 
 const GITHUB_CLIENT_ID = process.env.VITE_GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
@@ -127,19 +137,19 @@ export const handler: Handler = async (event) => {
   if (!code) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'Authorization code is required' }),
+      body: JSON.stringify({ error: "Authorization code is required" }),
     };
   }
 
   try {
     // Exchange code for access token with GitHub
     const tokenResponse = await fetch(
-      'https://github.com/login/oauth/access_token',
+      "https://github.com/login/oauth/access_token",
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
           client_id: GITHUB_CLIENT_ID,
@@ -158,8 +168,8 @@ export const handler: Handler = async (event) => {
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
         access_token: tokenData.access_token,
@@ -167,12 +177,12 @@ export const handler: Handler = async (event) => {
       }),
     };
   } catch (error) {
-    console.error('OAuth error:', error);
+    console.error("OAuth error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: 'Failed to authenticate with GitHub',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        error: "Failed to authenticate with GitHub",
+        details: error instanceof Error ? error.message : "Unknown error",
       }),
     };
   }
@@ -180,12 +190,14 @@ export const handler: Handler = async (event) => {
 ```
 
 **Key Security Points:**
+
 - CLIENT_SECRET accessed via `process.env` (server-side only)
 - Never exposed to frontend JavaScript
 - Token exchange happens server-side
 - Frontend only receives the access_token
 
 **Documentation:**
+
 - GitHub OAuth token exchange: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
 - Netlify Functions: https://docs.netlify.com/build/functions/environment-variables/
 
@@ -220,8 +232,14 @@ export interface GitHubRepo {
 
 ```typescript
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import type { GitHubUser } from '../types/github';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import type { GitHubUser } from "../types/github";
 
 interface AuthContextType {
   user: GitHubUser | null;
@@ -236,7 +254,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(() => {
     try {
-      return sessionStorage.getItem('github_token');
+      return sessionStorage.getItem("github_token");
     } catch {
       return null;
     }
@@ -256,21 +274,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const fetchUser = async () => {
       setLoading(true);
       try {
-        const response = await fetch('https://api.github.com/user', {
+        const response = await fetch("https://api.github.com/user", {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github.v3+json',
+            Authorization: `Bearer ${token}`,
+            Accept: "application/vnd.github.v3+json",
           },
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch user');
+          throw new Error("Failed to fetch user");
         }
 
         const userData: GitHubUser = await response.json();
         setUser(userData);
       } catch (error) {
-        console.error('Auth error:', error);
+        console.error("Auth error:", error);
         // Token invalid, clear it
         logout();
       } finally {
@@ -283,17 +301,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (newToken: string) => {
     try {
-      sessionStorage.setItem('github_token', newToken);
+      sessionStorage.setItem("github_token", newToken);
       setToken(newToken);
     } catch (error) {
-      console.error('Failed to save token:', error);
+      console.error("Failed to save token:", error);
       throw error;
     }
   };
 
   const logout = () => {
     try {
-      sessionStorage.removeItem('github_token');
+      sessionStorage.removeItem("github_token");
     } catch {
       // Ignore errors
     }
@@ -311,13 +329,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+    throw new Error("useAuth must be used within AuthProvider");
   }
   return context;
 }
 ```
 
 **Pattern Notes:**
+
 - **Mirrors `ThemeContext.tsx` pattern exactly** (file: `C:\Users\placko\crif\aiCertifikat\dashboard\github-dashboard\src\contexts\ThemeContext.tsx`)
 - Uses sessionStorage (more secure than localStorage for auth tokens)
 - Auto-fetches user on mount if token exists
@@ -328,6 +347,7 @@ export function useAuth() {
 While sessionStorage is vulnerable to XSS attacks, it's acceptable for localhost development. For production, consider httpOnly cookies (requires more backend work).
 
 **Documentation:**
+
 - Token storage security: https://auth0.com/docs/secure/security-guidance/data-security/token-storage
 - Authenticating to GitHub REST API: https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api
 
@@ -357,6 +377,7 @@ createRoot(document.getElementById("root")!).render(
 ```
 
 **Key changes:**
+
 - Wrap in `<BrowserRouter>` (enables routing)
 - Add `<AuthProvider>` nested inside `<ThemeProvider>`
 - **Order matters:** Router → Theme → Auth → App
@@ -368,9 +389,9 @@ createRoot(document.getElementById("root")!).render(
 **Create `src/components/ProtectedRoute.tsx`:**
 
 ```typescript
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import type { ReactNode } from 'react';
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import type { ReactNode } from "react";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -408,12 +429,14 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 ```
 
 **Purpose:**
+
 - Guards protected routes (like `/dashboard`)
 - Shows loading state while checking auth
 - Redirects to home if not authenticated
 - Renders children if authenticated
 
 **Documentation:**
+
 - React Router protected routes: https://ui.dev/react-router-protected-routes-authentication
 - Authentication with React Router v6: https://blog.logrocket.com/authentication-react-router-v6/
 
@@ -422,7 +445,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 **Create `src/components/LoginButton.tsx`:**
 
 ```typescript
-import './LoginButton.css';
+import "./LoginButton.css";
 
 const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
 const REDIRECT_URI = `${window.location.origin}/callback`;
@@ -435,8 +458,18 @@ export default function LoginButton() {
 
   return (
     <button onClick={handleLogin} className="login-button text-preset-5">
-      <svg className="github-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-        <path fillRule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V19c0 .27.16.59.67.5C17.14 18.16 20 14.42 20 10A10 10 0 0010 0z" clipRule="evenodd" />
+      <svg
+        className="github-icon"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 0C4.477 0 0 4.477 0 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V19c0 .27.16.59.67.5C17.14 18.16 20 14.42 20 10A10 10 0 0010 0z"
+          clipRule="evenodd"
+        />
       </svg>
       Sign in with GitHub
     </button>
@@ -475,12 +508,14 @@ export default function LoginButton() {
 ```
 
 **How it works:**
+
 1. Uses CLIENT_ID from environment (via `import.meta.env`)
 2. Redirects to GitHub OAuth authorization page
 3. Requests `read:user` and `repo` scopes
 4. GitHub redirects back to `/callback` after authorization
 
 **Design system usage:**
+
 - Uses `--spacing-*` variables (following existing pattern)
 - Uses `--color-blue-500` and `--color-blue-300` (existing colors)
 - Uses `text-preset-5` (16px bold)
@@ -491,8 +526,8 @@ export default function LoginButton() {
 **Create `src/components/UserMenu.tsx`:**
 
 ```typescript
-import { useAuth } from '../contexts/AuthContext';
-import './UserMenu.css';
+import { useAuth } from "../contexts/AuthContext";
+import "./UserMenu.css";
 
 export default function UserMenu() {
   const { user, logout } = useAuth();
@@ -509,10 +544,7 @@ export default function UserMenu() {
       <span className="user-menu-name text-preset-6">
         {user.name || user.login}
       </span>
-      <button
-        onClick={logout}
-        className="logout-button text-preset-7"
-      >
+      <button onClick={logout} className="logout-button text-preset-7">
         Logout
       </button>
     </div>
@@ -572,6 +604,7 @@ export default function UserMenu() {
 ```
 
 **Purpose:**
+
 - Shows user avatar (32px circular) and name
 - Logout button clears token and redirects
 - Only visible when user is logged in
@@ -582,10 +615,10 @@ export default function UserMenu() {
 **Modify `src/components/Header.tsx`:**
 
 ```typescript
-import ThemeToggle from './ThemeToggle';
-import UserMenu from './UserMenu';
-import { useAuth } from '../contexts/AuthContext';
-import './Header.css';
+import ThemeToggle from "./ThemeToggle";
+import UserMenu from "./UserMenu";
+import { useAuth } from "../contexts/AuthContext";
+import "./Header.css";
 
 export default function Header() {
   const { user } = useAuth();
@@ -615,6 +648,7 @@ export default function Header() {
 ```
 
 **Changes:**
+
 - Import `useAuth` hook and `UserMenu` component
 - Conditionally render `UserMenu` when user is logged in
 - Wrap UserMenu and ThemeToggle in `.header-actions` div
@@ -627,10 +661,10 @@ export default function Header() {
 **Create `src/pages/CallbackPage.tsx`:**
 
 ```typescript
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import './CallbackPage.css';
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import "./CallbackPage.css";
 
 export default function CallbackPage() {
   const [searchParams] = useSearchParams();
@@ -639,18 +673,18 @@ export default function CallbackPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const code = searchParams.get('code');
-    const errorParam = searchParams.get('error');
+    const code = searchParams.get("code");
+    const errorParam = searchParams.get("error");
 
     if (errorParam) {
-      setError('Authorization failed. Please try again.');
-      setTimeout(() => navigate('/'), 3000);
+      setError("Authorization failed. Please try again.");
+      setTimeout(() => navigate("/"), 3000);
       return;
     }
 
     if (!code) {
-      setError('No authorization code received.');
-      setTimeout(() => navigate('/'), 3000);
+      setError("No authorization code received.");
+      setTimeout(() => navigate("/"), 3000);
       return;
     }
 
@@ -659,16 +693,16 @@ export default function CallbackPage() {
         const response = await fetch(`/api/callback?code=${code}`);
 
         if (!response.ok) {
-          throw new Error('Failed to exchange token');
+          throw new Error("Failed to exchange token");
         }
 
         const data = await response.json();
         await login(data.access_token);
-        navigate('/dashboard');
+        navigate("/dashboard");
       } catch (err) {
-        console.error('Token exchange error:', err);
-        setError('Authentication failed. Please try again.');
-        setTimeout(() => navigate('/'), 3000);
+        console.error("Token exchange error:", err);
+        setError("Authentication failed. Please try again.");
+        setTimeout(() => navigate("/"), 3000);
       }
     };
 
@@ -729,6 +763,7 @@ export default function CallbackPage() {
 ```
 
 **How it works:**
+
 1. GitHub redirects to `/callback?code=ABC123`
 2. Component extracts `code` from URL
 3. Calls serverless function: `/api/callback?code=ABC123`
@@ -737,6 +772,7 @@ export default function CallbackPage() {
 6. Navigates to `/dashboard`
 
 **Error handling:**
+
 - User denies authorization on GitHub
 - Missing code parameter
 - Token exchange fails
@@ -747,8 +783,8 @@ export default function CallbackPage() {
 **Create `src/hooks/useGitHubRepos.ts`:**
 
 ```typescript
-import { useState, useEffect } from 'react';
-import type { GitHubRepo } from '../types/github';
+import { useState, useEffect } from "react";
+import type { GitHubRepo } from "../types/github";
 
 interface UseGitHubReposReturn {
   repos: GitHubRepo[];
@@ -756,7 +792,10 @@ interface UseGitHubReposReturn {
   error: string | null;
 }
 
-export function useGitHubRepos(token: string | null, username: string | null): UseGitHubReposReturn {
+export function useGitHubRepos(
+  token: string | null,
+  username: string | null
+): UseGitHubReposReturn {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -776,18 +815,18 @@ export function useGitHubRepos(token: string | null, username: string | null): U
           `https://api.github.com/users/${username}/repos?sort=updated&per_page=10&type=public`,
           {
             headers: {
-              'Authorization': `Bearer ${token}`,
-              'Accept': 'application/vnd.github.v3+json',
+              Authorization: `Bearer ${token}`,
+              Accept: "application/vnd.github.v3+json",
             },
           }
         );
 
         if (!response.ok) {
           if (response.status === 404) {
-            throw new Error('User not found');
+            throw new Error("User not found");
           }
           if (response.status === 403) {
-            throw new Error('Rate limit exceeded');
+            throw new Error("Rate limit exceeded");
           }
           throw new Error(`Failed to fetch repositories: ${response.status}`);
         }
@@ -795,7 +834,9 @@ export function useGitHubRepos(token: string | null, username: string | null): U
         const data: GitHubRepo[] = await response.json();
         setRepos(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load repositories');
+        setError(
+          err instanceof Error ? err.message : "Failed to load repositories"
+        );
         setRepos([]);
       } finally {
         setLoading(false);
@@ -810,6 +851,7 @@ export function useGitHubRepos(token: string | null, username: string | null): U
 ```
 
 **Pattern Notes:**
+
 - **Mirrors `useGitHubUser.ts` pattern** (file: `C:\Users\placko\crif\aiCertifikat\dashboard\github-dashboard\src\hooks\useGitHubUser.ts`)
 - Uses authenticated API call with Bearer token
 - Fetches top 10 repos sorted by update date
@@ -817,6 +859,7 @@ export function useGitHubRepos(token: string | null, username: string | null): U
 - Returns same shape: `{ data, loading, error }`
 
 **API Endpoint:** `https://api.github.com/users/{username}/repos`
+
 - Documentation: https://docs.github.com/en/rest/repos/repos#list-repositories-for-a-user
 
 ### STEP 12: Repository Card Component
@@ -824,8 +867,8 @@ export function useGitHubRepos(token: string | null, username: string | null): U
 **Create `src/components/RepoCard.tsx`:**
 
 ```typescript
-import type { GitHubRepo } from '../types/github';
-import './RepoCard.css';
+import type { GitHubRepo } from "../types/github";
+import "./RepoCard.css";
 
 interface RepoCardProps {
   repo: GitHubRepo;
@@ -837,8 +880,8 @@ function formatRelativeTime(dateString: string): string {
   const diffTime = Math.abs(now.getTime() - date.getTime());
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffDays === 0) return 'today';
-  if (diffDays === 1) return 'yesterday';
+  if (diffDays === 0) return "today";
+  if (diffDays === 1) return "yesterday";
   if (diffDays < 7) return `${diffDays} days ago`;
   if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
   if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
@@ -858,10 +901,18 @@ export default function RepoCard({ repo }: RepoCardProps) {
           {repo.name}
         </a>
         <div className="repo-stars">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
             <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" />
           </svg>
-          <span className="text-preset-7">{repo.stargazers_count.toLocaleString()}</span>
+          <span className="text-preset-7">
+            {repo.stargazers_count.toLocaleString()}
+          </span>
         </div>
       </div>
 
@@ -971,6 +1022,7 @@ export default function RepoCard({ repo }: RepoCardProps) {
 ```
 
 **Features:**
+
 - Displays all required info: name (link), description, stars, language, last update
 - Hover effect (lift + shadow)
 - Relative time formatting ("2 days ago")
@@ -979,6 +1031,7 @@ export default function RepoCard({ repo }: RepoCardProps) {
 - Links open in new tab with security attributes
 
 **Design system usage:**
+
 - Uses `text-preset-3` for name, `text-preset-6` for description, `text-preset-7` for meta
 - Uses design tokens throughout (spacing, colors, radius)
 - Follows existing card pattern from `UserProfile.css`
@@ -988,13 +1041,13 @@ export default function RepoCard({ repo }: RepoCardProps) {
 **Create `src/pages/HomePage.tsx`:**
 
 ```typescript
-import { useAuth } from '../contexts/AuthContext';
-import { useGitHubUser } from '../hooks/useGitHubUser';
-import SearchBar from '../components/SearchBar';
-import UserProfile from '../components/UserProfile';
-import EmptyState from '../components/EmptyState';
-import LoginButton from '../components/LoginButton';
-import './HomePage.css';
+import { useAuth } from "../contexts/AuthContext";
+import { useGitHubUser } from "../hooks/useGitHubUser";
+import SearchBar from "../components/SearchBar";
+import UserProfile from "../components/UserProfile";
+import EmptyState from "../components/EmptyState";
+import LoginButton from "../components/LoginButton";
+import "./HomePage.css";
 
 export default function HomePage() {
   const { user: authUser } = useAuth();
@@ -1002,11 +1055,7 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
-      <SearchBar
-        onSearch={searchUser}
-        loading={loading}
-        error={error}
-      />
+      <SearchBar onSearch={searchUser} loading={loading} error={error} />
 
       {!authUser && (
         <div className="login-prompt">
@@ -1019,9 +1068,7 @@ export default function HomePage() {
 
       {user && <UserProfile user={user} />}
 
-      {!user && !loading && !error && (
-        <EmptyState />
-      )}
+      {!user && !loading && !error && <EmptyState />}
     </div>
   );
 }
@@ -1031,7 +1078,7 @@ export default function HomePage() {
 
 ```css
 .home-page {
-  max-width: 730px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -1051,6 +1098,7 @@ export default function HomePage() {
 ```
 
 **Purpose:**
+
 - Keeps existing search functionality (requirement: "Yes, keep it")
 - Shows login button when not authenticated
 - Displays search results (existing UserProfile component)
@@ -1063,11 +1111,11 @@ export default function HomePage() {
 **Create `src/pages/DashboardPage.tsx`:**
 
 ```typescript
-import { useAuth } from '../contexts/AuthContext';
-import { useGitHubRepos } from '../hooks/useGitHubRepos';
-import UserProfile from '../components/UserProfile';
-import RepoCard from '../components/RepoCard';
-import './DashboardPage.css';
+import { useAuth } from "../contexts/AuthContext";
+import { useGitHubRepos } from "../hooks/useGitHubRepos";
+import UserProfile from "../components/UserProfile";
+import RepoCard from "../components/RepoCard";
+import "./DashboardPage.css";
 
 export default function DashboardPage() {
   const { user, token } = useAuth();
@@ -1078,23 +1126,25 @@ export default function DashboardPage() {
       {user && <UserProfile user={user} />}
 
       <section className="repos-section">
-        <h2 className="repos-title text-preset-2">Top 10 Public Repositories</h2>
+        <h2 className="repos-title text-preset-2">
+          Top 10 Public Repositories
+        </h2>
 
         {loading && (
           <p className="repos-message text-preset-4">Loading repositories...</p>
         )}
 
-        {error && (
-          <p className="repos-message error text-preset-4">{error}</p>
-        )}
+        {error && <p className="repos-message error text-preset-4">{error}</p>}
 
         {!loading && !error && repos.length === 0 && (
-          <p className="repos-message text-preset-4">No public repositories found.</p>
+          <p className="repos-message text-preset-4">
+            No public repositories found.
+          </p>
         )}
 
         {!loading && !error && repos.length > 0 && (
           <div className="repos-grid">
-            {repos.map(repo => (
+            {repos.map((repo) => (
               <RepoCard key={repo.id} repo={repo} />
             ))}
           </div>
@@ -1146,6 +1196,7 @@ export default function DashboardPage() {
 ```
 
 **Features:**
+
 - Shows user profile (existing component reused)
 - Displays top 10 repos in responsive grid
 - Loading and error states
@@ -1157,14 +1208,14 @@ export default function DashboardPage() {
 **Replace `src/App.tsx` with:**
 
 ```typescript
-import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import HomePage from './pages/HomePage';
-import DashboardPage from './pages/DashboardPage';
-import CallbackPage from './pages/CallbackPage';
-import ProtectedRoute from './components/ProtectedRoute';
-import './styles/index.css';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import HomePage from "./pages/HomePage";
+import DashboardPage from "./pages/DashboardPage";
+import CallbackPage from "./pages/CallbackPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import "./styles/index.css";
+import "./App.css";
 
 function App() {
   return (
@@ -1194,6 +1245,7 @@ export default App;
 ```
 
 **Routes:**
+
 - `/` - Home page (search + login button)
 - `/callback` - OAuth callback handler (public)
 - `/dashboard` - Protected dashboard (requires auth)
@@ -1217,6 +1269,7 @@ export default App;
 ```
 
 **New command:**
+
 - `npm run dev:netlify` - Starts Netlify Dev (Vite + serverless functions)
 
 **Important:** Use `npm run dev:netlify` instead of `npm run dev` for development!
@@ -1295,12 +1348,14 @@ npm run dev:netlify
 **Access at:** http://localhost:8888 (NOT 5173!)
 
 **Important:** Netlify Dev runs on port 8888 by default. It proxies:
+
 - Frontend: Vite dev server (with HMR)
 - Functions: Serverless functions at `/api/*`
 
 ## Testing Checklist
 
 ### OAuth Flow
+
 - [ ] Click "Sign in with GitHub" button on home page
 - [ ] Redirected to GitHub authorization page
 - [ ] See correct app name and permissions (read:user, repo)
@@ -1309,12 +1364,14 @@ npm run dev:netlify
 - [ ] Redirected to /dashboard with user profile visible
 
 ### Protected Routes
+
 - [ ] Try accessing `/dashboard` without login - redirected to home
 - [ ] Login successfully - can access `/dashboard`
 - [ ] Logout - redirected appropriately
 - [ ] Try accessing `/dashboard` after logout - redirected to home
 
 ### Header Display
+
 - [ ] Before login: See logo + theme toggle only
 - [ ] After login: See logo + avatar + name + logout button + theme toggle
 - [ ] Avatar displays correctly (32px circle)
@@ -1322,6 +1379,7 @@ npm run dev:netlify
 - [ ] Logout button works
 
 ### Dashboard Display
+
 - [ ] User profile shows (existing component)
 - [ ] "Top 10 Public Repositories" heading displays
 - [ ] Up to 10 repos shown in grid
@@ -1335,6 +1393,7 @@ npm run dev:netlify
 - [ ] Hover effects work on repo cards
 
 ### Home Page (Existing Functionality)
+
 - [ ] Search bar still works for public users
 - [ ] Can search any GitHub username
 - [ ] User profile displays after search
@@ -1343,12 +1402,14 @@ npm run dev:netlify
 - [ ] Empty state shows when nothing searched
 
 ### Error Handling
+
 - [ ] Decline authorization on GitHub - error message + redirect to home
 - [ ] Invalid/expired token - auto logout
 - [ ] User with no public repos - "No public repositories found" message
 - [ ] Network error during repo fetch - error message displayed
 
 ### Theme Compatibility
+
 - [ ] Switch to dark mode - all components adapt correctly
 - [ ] Login button readable in both themes
 - [ ] Repo cards readable in both themes
@@ -1356,6 +1417,7 @@ npm run dev:netlify
 - [ ] Theme persists after login/logout
 
 ### Browser Compatibility
+
 - [ ] sessionStorage works (check console for errors)
 - [ ] Page refresh after login - still authenticated
 - [ ] Close tab and reopen - session lost (sessionStorage cleared)
@@ -1382,6 +1444,7 @@ All commands must pass with no errors.
 **Cause:** Environment variables not loaded or incorrect values
 
 **Fix:**
+
 1. Check `.env.local` exists in project root
 2. Verify `VITE_GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` are correct
 3. Restart `npm run dev:netlify` (must restart for env var changes)
@@ -1391,6 +1454,7 @@ All commands must pass with no errors.
 **Cause:** Token expired or invalid
 
 **Fix:**
+
 1. Logout and login again
 2. Check if token exists: Open DevTools → Application → Session Storage → `github_token`
 3. If token looks wrong, clear sessionStorage and login again
@@ -1400,6 +1464,7 @@ All commands must pass with no errors.
 **Cause:** Netlify Dev not running or functions path incorrect
 
 **Fix:**
+
 1. Ensure using `npm run dev:netlify` (not `npm run dev`)
 2. Check `netlify.toml` exists in project root
 3. Check `netlify/functions/callback.ts` exists
@@ -1410,6 +1475,7 @@ All commands must pass with no errors.
 **Cause:** Callback URL doesn't match GitHub OAuth app settings
 
 **Fix:**
+
 1. Go to https://github.com/settings/developers
 2. Click your OAuth app
 3. Ensure "Authorization callback URL" is: `http://localhost:8888/callback`
@@ -1420,6 +1486,7 @@ All commands must pass with no errors.
 **Cause:** Too many GitHub API requests
 
 **Fix:**
+
 - Authenticated requests: 5,000/hour (should be fine)
 - If still hitting limits, wait an hour or use different GitHub account
 - Check rate limit: https://api.github.com/rate_limit
@@ -1427,22 +1494,26 @@ All commands must pass with no errors.
 ## Security Considerations
 
 ### Token Storage
+
 - Using sessionStorage (acceptable for localhost development)
 - Token cleared when browser tab closes
 - Vulnerable to XSS but React's XSS protections help
 - For production: Consider httpOnly cookies (requires backend changes)
 
 ### OAuth Secrets
+
 - CLIENT_SECRET never exposed to frontend
 - Only used server-side in Netlify function
 - .env.local ignored by Git
 - Never log tokens to console in production
 
 ### CORS
+
 - Serverless function allows all origins (`*`) for localhost development
 - For production: Restrict to specific domain
 
 ### External Links
+
 - All external links use `rel="noopener noreferrer"` (security best practice)
 - Repo links open in new tab safely
 
@@ -1498,42 +1569,52 @@ github-dashboard/
 Execute in this order:
 
 1. **Environment Setup**
+
    - [ ] Register GitHub OAuth app
    - [ ] Create `.env.local` with credentials
    - [ ] Install npm dependencies
    - [ ] Update `.gitignore`
 
 2. **Backend (Serverless Functions)**
+
    - [ ] Create `netlify.toml`
    - [ ] Create `netlify/functions/callback.ts`
 
 3. **Type Definitions**
+
    - [ ] Update `src/types/github.ts` (add GitHubRepo)
 
 4. **Authentication Infrastructure**
+
    - [ ] Create `src/contexts/AuthContext.tsx`
    - [ ] Update `src/main.tsx` (add Router + AuthProvider)
 
 5. **Routing Components**
+
    - [ ] Create `src/components/ProtectedRoute.tsx` + CSS
 
 6. **Authentication UI Components**
+
    - [ ] Create `src/components/LoginButton.tsx` + CSS
    - [ ] Create `src/components/UserMenu.tsx` + CSS
    - [ ] Update `src/components/Header.tsx` + CSS
 
 7. **OAuth Callback**
+
    - [ ] Create `src/pages/CallbackPage.tsx` + CSS
 
 8. **Dashboard Feature**
+
    - [ ] Create `src/hooks/useGitHubRepos.ts`
    - [ ] Create `src/components/RepoCard.tsx` + CSS
    - [ ] Create `src/pages/DashboardPage.tsx` + CSS
 
 9. **Home Page**
+
    - [ ] Create `src/pages/HomePage.tsx` + CSS
 
 10. **App Integration**
+
     - [ ] Update `src/App.tsx` (add routes)
     - [ ] Update `package.json` (add dev:netlify script)
 
@@ -1560,6 +1641,7 @@ Execute in this order:
 ## Confidence Score: 9/10
 
 **Rationale:**
+
 - Comprehensive plan with all required features
 - Well-researched OAuth flow with security considerations
 - Mirrors existing patterns (ThemeContext, useGitHubUser, design system)
@@ -1568,6 +1650,7 @@ Execute in this order:
 - Clear file structure and task order
 
 **Potential challenges (why not 10/10):**
+
 - First-time OAuth setup can be tricky (GitHub app registration)
 - Netlify Dev environment variable loading (may need restart)
 - Port confusion (8888 vs 5173)
@@ -1577,6 +1660,7 @@ All challenges are solvable with the troubleshooting guide provided.
 ## External Resources
 
 **Official Documentation:**
+
 - GitHub OAuth Apps: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app
 - GitHub REST API Authentication: https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api
 - React Router Protected Routes: https://ui.dev/react-router-protected-routes-authentication
@@ -1584,6 +1668,7 @@ All challenges are solvable with the troubleshooting guide provided.
 - Token Storage Best Practices: https://auth0.com/docs/secure/security-guidance/data-security/token-storage
 
 **Helpful Guides:**
+
 - Authentication with React Router v6: https://blog.logrocket.com/authentication-react-router-v6/
 - sessionStorage vs localStorage Security: https://stytch.com/blog/localstorage-vs-sessionstorage-vs-cookies/
 
