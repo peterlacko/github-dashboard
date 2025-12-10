@@ -2,9 +2,9 @@
 
 **Meno: Peter Lacko**
 
-**Dátum začiatku:**
+**Dátum začiatku:** 8.12.2025
 
-**Dátum dokončenia:**
+**Dátum dokončenia:** 10.12.2025 
 
 **Zadanie:** Frontend / Backend
 
